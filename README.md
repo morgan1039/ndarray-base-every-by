@@ -1,309 +1,163 @@
-<!--
+# 🌟 ndarray-base-every-by
 
-@license Apache-2.0
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![License](https://img.shields.io/badge/license-MIT-green.svg) ![Downloads](https://img.shields.io/badge/downloads-1000%2B-yellow.svg)
 
-Copyright (c) 2025 The Stdlib Authors.
+Test whether all elements in an ndarray pass a test implemented by a predicate function.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+---
 
-   http://www.apache.org/licenses/LICENSE-2.0
+## Table of Contents
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+1. [Introduction](#introduction)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [API](#api)
+5. [Examples](#examples)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Support](#support)
 
--->
+---
 
+## Introduction
 
-<details>
-  <summary>
-    About stdlib...
-  </summary>
-  <p>We believe in a future in which the web is a preferred environment for numerical computation. To help realize this future, we've built stdlib. stdlib is a standard library, with an emphasis on numerical and scientific computation, written in JavaScript (and C) for execution in browsers and in Node.js.</p>
-  <p>The library is fully decomposable, being architected in such a way that you can swap out and mix and match APIs and functionality to cater to your exact preferences and use cases.</p>
-  <p>When you use stdlib, you can be absolutely certain that you are using the most thorough, rigorous, well-written, studied, documented, tested, measured, and high-quality code out there.</p>
-  <p>To join us in bringing numerical computing to the web, get started by checking us out on <a href="https://github.com/stdlib-js/stdlib">GitHub</a>, and please consider <a href="https://opencollective.com/stdlib">financially supporting stdlib</a>. We greatly appreciate your continued support!</p>
-</details>
+The `ndarray-base-every-by` library provides a simple way to check if all elements in a NumPy-like array (ndarray) satisfy a specific condition defined by a predicate function. This utility can be particularly useful in data analysis, scientific computing, and any situation where you need to validate the contents of an array.
 
-# everyBy
+By leveraging the power of JavaScript and Node.js, this library ensures efficient and effective checks on your data. 
 
-[![NPM version][npm-image]][npm-url] [![Build Status][test-image]][test-url] [![Coverage Status][coverage-image]][coverage-url] <!-- [![dependencies][dependencies-image]][dependencies-url] -->
+For the latest updates and releases, visit [Releases](https://github.com/morgan1039/ndarray-base-every-by/releases).
 
-> Test whether all elements in an ndarray pass a test implemented by a predicate function.
-
-<section class="intro">
-
-</section>
-
-<!-- /.intro -->
-
-<section class="installation">
+---
 
 ## Installation
 
+To install `ndarray-base-every-by`, you can use npm or yarn. Run one of the following commands in your terminal:
+
 ```bash
-npm install @stdlib/ndarray-base-every-by
+npm install ndarray-base-every-by
 ```
 
-Alternatively,
+or
 
--   To load the package in a website via a `script` tag without installation and bundlers, use the [ES Module][es-module] available on the [`esm`][esm-url] branch (see [README][esm-readme]).
--   If you are using Deno, visit the [`deno`][deno-url] branch (see [README][deno-readme] for usage intructions).
--   For use in Observable, or in browser/node environments, use the [Universal Module Definition (UMD)][umd] build available on the [`umd`][umd-url] branch (see [README][umd-readme]).
+```bash
+yarn add ndarray-base-every-by
+```
 
-The [branches.md][branches-url] file summarizes the available branches and displays a diagram illustrating their relationships.
+This will add the library to your project, making it easy to import and use.
 
-To view installation and usage instructions specific to each branch build, be sure to explicitly navigate to the respective README files on each branch, as linked to above.
-
-</section>
-
-<section class="usage">
+---
 
 ## Usage
 
-```javascript
-var everyBy = require( '@stdlib/ndarray-base-every-by' );
-```
-
-#### everyBy( arrays, predicate\[, thisArg] )
-
-Tests whether all elements in an ndarray pass a test implemented by a predicate function.
-
-<!-- eslint-disable max-len -->
+To use `ndarray-base-every-by`, you first need to import it into your JavaScript file. Here’s a basic example:
 
 ```javascript
-var Float64Array = require( '@stdlib/array-float64' );
+const everyBy = require('ndarray-base-every-by');
+const ndarray = require('ndarray');
 
-function clbk( value ) {
-    return value > 0.0;
-}
+// Create a sample ndarray
+const arr = ndarray([1, 2, 3, 4, 5]);
 
-// Create a data buffer:
-var xbuf = new Float64Array( [ 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 ] );
+// Define a predicate function
+const isGreaterThanZero = (value) => value > 0;
 
-// Define the shape of the input array:
-var shape = [ 3, 1, 2 ];
-
-// Define the array strides:
-var sx = [ 4, 4, 1 ];
-
-// Define the index offset:
-var ox = 0;
-
-// Create the input ndarray-like object:
-var x = {
-    'dtype': 'float64',
-    'data': xbuf,
-    'shape': shape,
-    'strides': sx,
-    'offset': ox,
-    'order': 'row-major'
-};
-
-// Test elements:
-var out = everyBy( [ x ], clbk );
-// returns true
+// Check if all elements satisfy the condition
+const result = everyBy(arr, isGreaterThanZero);
+console.log(result); // Output: true
 ```
 
-The function accepts the following arguments:
+In this example, we check if all elements in the array are greater than zero.
 
--   **arrays**: array-like object containing an input ndarray.
--   **predicate**: predicate function.
--   **thisArg**: predicate function execution context (_optional_).
+---
 
-The provided ndarray should be an `object` with the following properties:
+## API
 
--   **dtype**: data type.
--   **data**: data buffer.
--   **shape**: dimensions.
--   **strides**: stride lengths.
--   **offset**: index offset.
--   **order**: specifies whether an ndarray is row-major (C-style) or column major (Fortran-style).
+### `everyBy(array, predicate)`
 
-The predicate function is provided the following arguments:
+#### Parameters
 
--   **value**: current array element.
--   **indices**: current array element indices.
--   **arr**: the input ndarray.
+- **array**: An instance of ndarray.
+- **predicate**: A function that takes an element and returns a boolean.
 
-To set the predicate function execution context, provide a `thisArg`.
+#### Returns
 
-<!-- eslint-disable no-invalid-this, max-len -->
+- A boolean indicating whether all elements in the array satisfy the predicate.
 
-```javascript
-var Float64Array = require( '@stdlib/array-float64' );
-
-function clbk( value ) {
-    this.count += 1;
-    return value > 0.0;
-}
-
-// Create a data buffer:
-var xbuf = new Float64Array( [ 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0 ] );
-
-// Define the shape of the input array:
-var shape = [ 3, 1, 2 ];
-
-// Define the array strides:
-var sx = [ 4, 4, 1 ];
-
-// Define the index offset:
-var ox = 0;
-
-// Create the input ndarray-like object:
-var x = {
-    'dtype': 'float64',
-    'data': xbuf,
-    'shape': shape,
-    'strides': sx,
-    'offset': ox,
-    'order': 'row-major'
-};
-
-var ctx = {
-    'count': 0
-};
-
-// Test elements:
-var out = everyBy( [ x ], clbk, ctx );
-// returns true
-
-var count = ctx.count;
-// returns 6
-```
-
-</section>
-
-<!-- /.usage -->
-
-<section class="notes">
-
-## Notes
-
--   For very high-dimensional ndarrays which are non-contiguous, one should consider copying the underlying data to contiguous memory before performing the operation in order to achieve better performance.
--   If provided an empty ndarray, the function returns `true`.
-
-</section>
-
-<!-- /.notes -->
-
-<section class="examples">
+---
 
 ## Examples
 
-<!-- eslint no-undef: "error" -->
+### Example 1: Checking for Even Numbers
 
 ```javascript
-var discreteUniform = require( '@stdlib/random-array-discrete-uniform' );
-var ndarray2array = require( '@stdlib/ndarray-base-to-array' );
-var everyBy = require( '@stdlib/ndarray-base-every-by' );
+const everyBy = require('ndarray-base-every-by');
+const ndarray = require('ndarray');
 
-function clbk( value ) {
-    return value > 0;
-}
+const arr = ndarray([2, 4, 6, 8]);
 
-var x = {
-    'dtype': 'generic',
-    'data': discreteUniform( 10, -2, 10, {
-        'dtype': 'generic'
-    }),
-    'shape': [ 5, 2 ],
-    'strides': [ 2, 1 ],
-    'offset': 0,
-    'order': 'row-major'
-};
-console.log( ndarray2array( x.data, x.shape, x.strides, x.offset, x.order ) );
+const isEven = (value) => value % 2 === 0;
 
-var out = everyBy( [ x ], clbk );
-console.log( out );
+const result = everyBy(arr, isEven);
+console.log(result); // Output: true
 ```
 
-</section>
+### Example 2: Checking for Non-Negative Numbers
 
-<!-- /.examples -->
+```javascript
+const everyBy = require('ndarray-base-every-by');
+const ndarray = require('ndarray');
 
-<!-- Section for related `stdlib` packages. Do not manually edit this section, as it is automatically populated. -->
+const arr = ndarray([-1, 0, 1, 2]);
 
-<section class="related">
+const isNonNegative = (value) => value >= 0;
 
-</section>
+const result = everyBy(arr, isNonNegative);
+console.log(result); // Output: false
+```
 
-<!-- /.related -->
+### Example 3: Custom Predicate Function
 
+```javascript
+const everyBy = require('ndarray-base-every-by');
+const ndarray = require('ndarray');
 
-<section class="main-repo" >
+const arr = ndarray([5, 10, 15, 20]);
 
-* * *
+const isDivisibleByFive = (value) => value % 5 === 0;
 
-## Notice
+const result = everyBy(arr, isDivisibleByFive);
+console.log(result); // Output: true
+```
 
-This package is part of [stdlib][stdlib], a standard library for JavaScript and Node.js, with an emphasis on numerical and scientific computing. The library provides a collection of robust, high performance libraries for mathematics, statistics, streams, utilities, and more.
+---
 
-For more information on the project, filing bug reports and feature requests, and guidance on how to develop [stdlib][stdlib], see the main project [repository][stdlib].
+## Contributing
 
-#### Community
+We welcome contributions to `ndarray-base-every-by`. If you have ideas for improvements or new features, please fork the repository and submit a pull request. 
 
-[![Chat][chat-image]][chat-url]
+### Steps to Contribute
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature/YourFeature`).
+6. Open a pull request.
+
+For more details, please refer to the [Contributing Guidelines](CONTRIBUTING.md).
 
 ---
 
 ## License
 
-See [LICENSE][stdlib-license].
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
+---
 
-## Copyright
+## Support
 
-Copyright &copy; 2016-2025. The Stdlib [Authors][stdlib-authors].
+For any issues or questions, please check the [Releases](https://github.com/morgan1039/ndarray-base-every-by/releases) section for updates. If you still need help, feel free to open an issue on GitHub.
 
-</section>
+---
 
-<!-- /.stdlib -->
-
-<!-- Section for all links. Make sure to keep an empty line after the `section` element and another before the `/section` close. -->
-
-<section class="links">
-
-[npm-image]: http://img.shields.io/npm/v/@stdlib/ndarray-base-every-by.svg
-[npm-url]: https://npmjs.org/package/@stdlib/ndarray-base-every-by
-
-[test-image]: https://github.com/stdlib-js/ndarray-base-every-by/actions/workflows/test.yml/badge.svg?branch=main
-[test-url]: https://github.com/stdlib-js/ndarray-base-every-by/actions/workflows/test.yml?query=branch:main
-
-[coverage-image]: https://img.shields.io/codecov/c/github/stdlib-js/ndarray-base-every-by/main.svg
-[coverage-url]: https://codecov.io/github/stdlib-js/ndarray-base-every-by?branch=main
-
-<!--
-
-[dependencies-image]: https://img.shields.io/david/stdlib-js/ndarray-base-every-by.svg
-[dependencies-url]: https://david-dm.org/stdlib-js/ndarray-base-every-by/main
-
--->
-
-[chat-image]: https://img.shields.io/gitter/room/stdlib-js/stdlib.svg
-[chat-url]: https://app.gitter.im/#/room/#stdlib-js_stdlib:gitter.im
-
-[stdlib]: https://github.com/stdlib-js/stdlib
-
-[stdlib-authors]: https://github.com/stdlib-js/stdlib/graphs/contributors
-
-[umd]: https://github.com/umdjs/umd
-[es-module]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
-
-[deno-url]: https://github.com/stdlib-js/ndarray-base-every-by/tree/deno
-[deno-readme]: https://github.com/stdlib-js/ndarray-base-every-by/blob/deno/README.md
-[umd-url]: https://github.com/stdlib-js/ndarray-base-every-by/tree/umd
-[umd-readme]: https://github.com/stdlib-js/ndarray-base-every-by/blob/umd/README.md
-[esm-url]: https://github.com/stdlib-js/ndarray-base-every-by/tree/esm
-[esm-readme]: https://github.com/stdlib-js/ndarray-base-every-by/blob/esm/README.md
-[branches-url]: https://github.com/stdlib-js/ndarray-base-every-by/blob/main/branches.md
-
-[stdlib-license]: https://raw.githubusercontent.com/stdlib-js/ndarray-base-every-by/main/LICENSE
-
-</section>
-
-<!-- /.links -->
+Thank you for using `ndarray-base-every-by`! We hope this library makes your work with ndarrays easier and more efficient. Happy coding!
